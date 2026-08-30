@@ -1,18 +1,58 @@
+:root {
+  --primary-color: #2563eb;
+  --dark-color: #0f172a;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #334155;
+  scroll-behavior: smooth;
+}
+
 .hero-section {
-      background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), 
-                  url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80') center/cover;
-      color: white;
-      padding: 90px 0;
-    }
-    .card-img-top {
-      height: 190px;
-      object-fit: cover;
-    }
-    .badge-rating {
-      background-color: #28a745;
-    }
-    .filter-card {
-      background-color: #f8f9fa;
-      border: 1px solid #e9ecef;
-      border-radius: 10px;
-    }
+  background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
+}
+
+.search-box {
+  max-width: 600px;
+}
+
+.category-card {
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary-color) !important;
+}
+
+.icon-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  border-radius: 12px;
+}
+
+.project-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}

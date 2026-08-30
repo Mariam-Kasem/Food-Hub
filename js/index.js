@@ -1,211 +1,320 @@
- // Restaurants Data
-    const restaurantData = [
-      { id: 1, name: "Pizza Bistro", cuisine: "Italian • Pizza", rating: 4.8, time: "25-35 mins", img: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&q=80" },
-      { id: 2, name: "Burger Kingly", cuisine: "American • Burgers", rating: 4.6, time: "20-30 mins", img: "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=400&q=80" },
-      { id: 3, name: "Green Fresh Salad", cuisine: "Healthy • Vegetarian", rating: 4.9, time: "15-25 mins", img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400&q=80" },
-      { id: 4, name: "Sweet Treats Bakery", cuisine: "Desserts • Pastries", rating: 4.7, time: "10-20 mins", img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=400&q=80" }
-    ];
-
-    // Food Data (Includes rating, popularity count, and price)
-    const foodData = [
-      { id: 1, name: "Margherita Pizza", category: "Pizza", price: 12.99, rating: 4.8, ordersCount: 230, img: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=400&q=80", desc: "Mozzarella, fresh tomato puree, and basil leaves." },
-      { id: 2, name: "Pepperoni Passion", category: "Pizza", price: 16.50, rating: 4.9, ordersCount: 450, img: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=400&q=80", desc: "Generous spicy pepperoni slices with mozzarella." },
-      { id: 3, name: "Cheeseburger Deluxe", category: "Burgers", price: 9.49, rating: 4.5, ordersCount: 310, img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80", desc: "Juicy beef patty, cheddar, lettuce and pickles." },
-      { id: 4, name: "Double Smoked Burger", category: "Burgers", price: 14.99, rating: 4.7, ordersCount: 190, img: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=400&q=80", desc: "Double patty, smoked sauce & caramelized onions." },
-      { id: 5, name: "Avocado Crunch Salad", category: "Healthy", price: 8.99, rating: 4.6, ordersCount: 120, img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400&q=80", desc: "Avocado, mixed greens, seeds and vinaigrette." },
-      { id: 6, name: "Chocolate Lava Cake", category: "Desserts", price: 6.50, rating: 4.9, ordersCount: 520, img: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=400&q=80", desc: "Warm cake with molten chocolate core." }
-    ];
-
-    let cart = [];
-
-    // Render Restaurants
-    function renderRestaurants(list) {
-      const grid = document.getElementById("restaurantGrid");
-      grid.innerHTML = "";
-      if (list.length === 0) {
-        grid.innerHTML = `<div class="col-12 text-center text-muted">No restaurants match your search.</div>`;
-        return;
-      }
-      list.forEach(r => {
-        grid.innerHTML += `
-          <div class="col-md-6 col-lg-3">
-            <div class="card h-100 shadow-sm">
-              <img src="${r.img}" class="card-img-top" alt="${r.name}">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                  <h6 class="card-title fw-bold mb-0">${r.name}</h6>
-                  <span class="badge badge-rating">${r.rating} ★</span>
-                </div>
-                <p class="text-muted small mb-2">${r.cuisine}</p>
-                <div class="d-flex justify-content-between small text-secondary">
-                  <span><i class="bi bi-clock"></i> ${r.time}</span>
-                  <span class="text-success fw-bold">Open</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      });
+// Initial Data Store
+const defaultData = {
+  categories: [
+    { id: 1, name: "Web Development", icon: "fa-code", projectCount: 1240 },
+    { id: 2, name: "Graphic Design", icon: "fa-pen-nib", projectCount: 850 },
+    { id: 3, name: "Digital Marketing", icon: "fa-bullhorn", projectCount: 620 },
+    { id: 4, name: "Content Writing", icon: "fa-feather", projectCount: 430 }
+  ],
+  projects: [
+    {
+      id: 101,
+      title: "Full-Stack E-Commerce Dashboard",
+      category: "Web Development",
+      budget: 1200,
+      description: "Looking for an experienced dev to build a responsive admin panel using React, Node.js, and MongoDB.",
+      skills: ["React", "Node.js", "MongoDB", "Tailwind"],
+      deadline: "15 Days",
+      client: "TechCorp Inc."
+    },
+    {
+      id: 102,
+      title: "Brand Identity & UI Design System",
+      category: "Graphic Design",
+      budget: 450,
+      description: "Create modern logo variations, typography guides, and mobile UI kits in Figma for a fintech app.",
+      skills: ["Figma", "UI/UX", "Branding", "Illustrator"],
+      deadline: "7 Days",
+      client: "Nexus Studio"
+    },
+    {
+      id: 103,
+      title: "SEO Campaign & Social Media Growth",
+      category: "Digital Marketing",
+      budget: 650,
+      description: "Drive targeted organic traffic, manage Meta ad campaigns, and provide weekly performance analytics.",
+      skills: ["SEO", "Meta Ads", "Google Analytics"],
+      deadline: "30 Days",
+      client: "Bloom Health"
+    },
+    {
+      id: 104,
+      title: "Technical Blog Articles on Cloud & AI",
+      category: "Content Writing",
+      budget: 300,
+      description: "Write 5 engaging, SEO-optimized technical articles explaining modern cloud architecture and AI integrations.",
+      skills: ["Tech Writing", "SEO", "Copywriting"],
+      deadline: "10 Days",
+      client: "DataFlow Media"
+    },
+    {
+      id: 105,
+      title: "Cross-Platform Mobile Fitness Tracker",
+      category: "Web Development",
+      budget: 1800,
+      description: "Build a responsive mobile application with workout logs, progress charts, and offline storage support.",
+      skills: ["Flutter", "Firebase", "REST APIs"],
+      deadline: "20 Days",
+      client: "FitPulse App"
     }
-
-    // 1. Search Restaurant by Name
-    function filterRestaurants() {
-      const query = document.getElementById("restaurantSearch").value.toLowerCase();
-      const filtered = restaurantData.filter(r => r.name.toLowerCase().includes(query) || r.cuisine.toLowerCase().includes(query));
-      renderRestaurants(filtered);
+  ],
+  freelancers: [
+    {
+      id: 201,
+      name: "Ahmed Hassan",
+      role: "Frontend Engineer",
+      rating: 4.9,
+      reviewsCount: 48,
+      hourlyRate: 40,
+      bio: "Expert in creating clean, fast, and responsive user interfaces with modern React ecosystems.",
+      skills: ["React", "TypeScript", "Tailwind", "Next.js"],
+      img: "https://i.pravatar.cc/150?img=12"
+    },
+    {
+      id: 202,
+      name: "Sarah Jenkins",
+      role: "Product Designer",
+      rating: 5.0,
+      reviewsCount: 62,
+      hourlyRate: 45,
+      bio: "Crafting engaging wireframes, design systems, and mobile prototypes for SaaS products.",
+      skills: ["Figma", "UI/UX", "Prototyping", "Design Systems"],
+      img: "https://i.pravatar.cc/150?img=32"
+    },
+    {
+      id: 203,
+      name: "Omar Tarek",
+      role: "Full-Stack Developer",
+      rating: 4.8,
+      reviewsCount: 35,
+      hourlyRate: 50,
+      bio: "Building scalable backend architectures and API-first web applications using Node.js and MongoDB.",
+      skills: ["Node.js", "Express", "MongoDB", "JavaScript"],
+      img: "https://i.pravatar.cc/150?img=68"
+    },
+    {
+      id: 204,
+      name: "Elena Rostova",
+      role: "Digital Strategist & Copywriter",
+      rating: 4.7,
+      reviewsCount: 29,
+      hourlyRate: 30,
+      bio: "Helping tech businesses communicate clearly and scale their digital footprint with optimized content.",
+      skills: ["SEO", "Content Strategy", "Email Marketing"],
+      img: "https://i.pravatar.cc/150?img=47"
     }
-
-    // Render Food Cards
-    function renderFoods(list) {
-      const grid = document.getElementById("foodGrid");
-      grid.innerHTML = "";
-      if (list.length === 0) {
-        grid.innerHTML = `<div class="col-12 text-center text-muted">No food items found matching your filters.</div>`;
-        return;
-      }
-      list.forEach(f => {
-        grid.innerHTML += `
-          <div class="col-md-6 col-lg-4">
-            <div class="card h-100 shadow-sm">
-              <img src="${f.img}" class="card-img-top" alt="${f.name}">
-              <div class="card-body d-flex flex-column">
-                <div class="d-flex justify-content-between align-items-start mb-1">
-                  <h6 class="fw-bold mb-0">${f.name}</h6>
-                  <span class="badge bg-secondary">${f.category}</span>
-                </div>
-                <div class="small text-muted mb-2">
-                  <span class="text-warning">★ ${f.rating}</span> | ${f.ordersCount}+ orders
-                </div>
-                <p class="text-muted small">${f.desc}</p>
-                <div class="mt-auto d-flex justify-content-between align-items-center">
-                  <span class="fs-5 fw-bold text-dark">$${f.price.toFixed(2)}</span>
-                  <button class="btn btn-warning btn-sm fw-bold" onclick="addToCart(${f.id})">
-                    <i class="bi bi-cart-plus"></i> Add
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      });
+  ],
+  userProposals: JSON.parse(localStorage.getItem('userProposals')) || [
+    {
+      id: 1,
+      projectTitle: "Full-Stack E-Commerce Dashboard",
+      bidAmount: 1100,
+      submissionDate: "2026-08-27",
+      status: "Under Review"
     }
+  ]
+};
 
-    // Price Slider Helper
-    function updatePriceSlider(val) {
-      document.getElementById("priceDisplay").innerText = `$${val}`;
-      filterAndSortFoods();
-    }
+// 1. Render Categories
+function renderCategories() {
+  const container = document.querySelector('#categoriesContainer');
+  if (!container) return;
 
-    // 2. Search Foods by Name, Category, Price Range & Sort (Rating/Popularity/Price)
-    function filterAndSortFoods() {
-      const search = document.getElementById("foodSearch").value.toLowerCase();
-      const category = document.getElementById("foodCategory").value;
-      const maxPrice = parseFloat(document.getElementById("priceRange").value);
-      const sortBy = document.getElementById("foodSort").value;
+  const colors = ['primary', 'success', 'warning', 'danger'];
+  container.innerHTML = defaultData.categories.map((cat, idx) => `
+    <div class="col-md-6 col-lg-3">
+      <div class="card h-100 border text-center p-4 category-card" onclick="filterByCategory('${cat.name}')">
+        <div class="icon-circle bg-${colors[idx % colors.length]}-subtle text-${colors[idx % colors.length]} mx-auto mb-3">
+          <i class="fa-solid ${cat.icon} fa-xl"></i>
+        </div>
+        <h5 class="fw-bold mb-1">${cat.name}</h5>
+        <small class="text-muted">${cat.projectCount} Projects</small>
+      </div>
+    </div>
+  `).join('');
+}
 
-      // Filtering
-      let result = foodData.filter(item => {
-        const matchesName = item.name.toLowerCase().includes(search);
-        const matchesCat = category === "All" || item.category === category;
-        const matchesPrice = item.price <= maxPrice;
-        return matchesName && matchesCat && matchesPrice;
-      });
+// 2. Render Projects
+function renderProjects(projectsToRender = defaultData.projects) {
+  const container = document.querySelector('#projectsContainer');
+  if (!container) return;
 
-      // Sorting
-      if (sortBy === "rating") {
-        result.sort((a, b) => b.rating - a.rating);
-      } else if (sortBy === "popularity") {
-        result.sort((a, b) => b.ordersCount - a.ordersCount);
-      } else if (sortBy === "price-low") {
-        result.sort((a, b) => a.price - b.price);
-      } else if (sortBy === "price-high") {
-        result.sort((a, b) => b.price - a.price);
-      }
+  if (projectsToRender.length === 0) {
+    container.innerHTML = `<div class="col-12 text-center py-5"><h5 class="text-muted">No projects found matching your criteria.</h5></div>`;
+    return;
+  }
 
-      renderFoods(result);
-    }
+  container.innerHTML = projectsToRender.map(project => `
+    <div class="col-md-6 col-lg-4">
+      <div class="card project-card h-100 border-0 shadow-sm p-4 d-flex flex-column">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2">${project.category}</span>
+          <span class="fw-bold text-success fs-5">$${project.budget}</span>
+        </div>
+        <h5 class="fw-bold text-dark mb-2">${project.title}</h5>
+        <p class="text-muted flex-grow-1 small">${project.description}</p>
+        <div class="d-flex flex-wrap gap-1 mb-3">
+          ${project.skills.map(skill => `<span class="badge bg-light text-secondary border">${skill}</span>`).join('')}
+        </div>
+        <div class="border-top pt-3 d-flex justify-content-between small text-muted mb-3">
+          <span><i class="fa-regular fa-clock me-1"></i> ${project.deadline}</span>
+          <span><i class="fa-regular fa-user me-1"></i> ${project.client}</span>
+        </div>
+        <button class="btn btn-primary w-100 fw-semibold" onclick="openProposalModal(${project.id})">Apply Now</button>
+      </div>
+    </div>
+  `).join('');
+}
 
-    // Cart Handlers
-    function addToCart(id) {
-      const exist = cart.find(x => x.id === id);
-      if (exist) {
-        exist.quantity += 1;
-      } else {
-        const item = foodData.find(x => x.id === id);
-        cart.push({ ...item, quantity: 1 });
-      }
-      updateCartUI();
-    }
+// 3. Render Freelancers
+function renderFreelancers() {
+  const container = document.querySelector('#freelancersContainer');
+  if (!container) return;
 
-    function changeQuantity(id, delta) {
-      const exist = cart.find(x => x.id === id);
-      if (exist) {
-        exist.quantity += delta;
-        if (exist.quantity <= 0) cart = cart.filter(x => x.id !== id);
-      }
-      updateCartUI();
-    }
+  container.innerHTML = defaultData.freelancers.map((freelancer, index) => `
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 border text-center p-4 shadow-sm">
+        <img src="${freelancer.img}" alt="${freelancer.name}" class="rounded-circle mx-auto mb-3 border p-1" width="90" height="90" style="object-fit: cover;">
+        <h5 class="fw-bold mb-0">${freelancer.name}</h5>
+        <small class="text-primary fw-semibold mb-2 d-block">${freelancer.role}</small>
+        <div class="text-warning small mb-3">
+          <i class="fa-solid fa-star"></i>
+          <span class="text-dark fw-bold ms-1">${freelancer.rating}</span>
+          <span class="text-muted">(${freelancer.reviewsCount} reviews)</span>
+        </div>
+        <p class="text-muted small mb-3">${freelancer.bio}</p>
+        <div class="d-flex justify-content-center flex-wrap gap-1 mb-4">
+          ${freelancer.skills.map(skill => `<span class="badge bg-light text-secondary border">${skill}</span>`).join('')}
+        </div>
+        <button class="btn btn-outline-primary w-100 fw-semibold" onclick="DisplayProfile(${index})">View Profile</button>
+      </div>
+    </div>
+  `).join('');
+}
 
-    function clearCart() {
-      cart = [];
-      updateCartUI();
-    }
+// 4. Render Proposals Table & Dashboard Counter
+function renderProposals() {
+  const tbody = document.querySelector('#proposalsTableBody');
+  const countBadge = document.querySelector('#dashProposalsCount');
+  if (!tbody) return;
 
-    function updateCartUI() {
-      const count = cart.reduce((acc, cur) => acc + cur.quantity, 0);
-      const total = cart.reduce((acc, cur) => acc + (cur.price * cur.quantity), 0).toFixed(2);
+  countBadge.textContent = defaultData.userProposals.length;
 
-      document.getElementById("cartCount").innerText = count;
-      document.getElementById("modalCartTotal").innerText = `$${total}`;
-      document.getElementById("orderTotal").innerText = `$${total}`;
+  tbody.innerHTML = defaultData.userProposals.map(item => `
+    <tr>
+      <td class="fw-semibold">${item.projectTitle}</td>
+      <td class="text-success fw-bold">$${item.bidAmount}</td>
+      <td>${item.submissionDate}</td>
+      <td><span class="badge ${item.status === 'Accepted' ? 'bg-success-subtle text-success' : 'bg-warning-subtle text-warning'} border px-2 py-1">${item.status}</span></td>
+    </tr>
+  `).join('');
+}
 
-      const container = document.getElementById("cartItemsContainer");
-      if (cart.length === 0) {
-        container.innerHTML = `<p class="text-muted text-center">Your cart is empty.</p>`;
-      } else {
-        container.innerHTML = cart.map(i => `
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <div>
-              <div class="fw-semibold">${i.name}</div>
-              <small class="text-muted">$${i.price.toFixed(2)}</small>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-              <button class="btn btn-sm btn-outline-secondary" onclick="changeQuantity(${i.id}, -1)">-</button>
-              <span class="fw-bold">${i.quantity}</span>
-              <button class="btn btn-sm btn-outline-secondary" onclick="changeQuantity(${i.id}, 1)">+</button>
-            </div>
-          </div>
-        `).join("");
-      }
-    }
+// 5. Open Freelancer Profile Modal
+function DisplayProfile(index) {
+  const freelancer = defaultData.freelancers[index];
+  if (!freelancer) return;
 
-    function handleCheckout(e) {
-      e.preventDefault();
-      if (cart.length === 0) {
-        alert("Please add food items to your cart first!");
-        return;
-      }
-      const name = document.getElementById("custName").value;
-      const phone = document.getElementById("custPhone").value;
-      const addr = document.getElementById("custAddress").value;
-      const total = cart.reduce((acc, cur) => acc + (cur.price * cur.quantity), 0).toFixed(2);
+  document.querySelector('#modalProfileImg').src = freelancer.img;
+  document.querySelector('#modalProfileName').textContent = freelancer.name;
+  document.querySelector('#modalProfileRole').textContent = freelancer.role;
+  document.querySelector('#modalProfileRating').textContent = freelancer.rating;
+  document.querySelector('#modalProfileReviews').textContent = `(${freelancer.reviewsCount} reviews)`;
+  document.querySelector('#modalProfileRate').textContent = `$${freelancer.hourlyRate}/hr`;
+  document.querySelector('#modalProfileBio').textContent = freelancer.bio;
 
-      document.getElementById("summaryDetails").innerHTML = `
-        <p class="mb-1"><strong>Name:</strong> ${name}</p>
-        <p class="mb-1"><strong>Phone:</strong> ${phone}</p>
-        <p class="mb-2"><strong>Address:</strong> ${addr}</p>
-        <h6 class="fw-bold mt-3">Items:</h6>
-        <ul class="list-group mb-3">
-          ${cart.map(c => `<li class="list-group-item d-flex justify-content-between"><span>${c.name} x${c.quantity}</span><span>$${(c.price * c.quantity).toFixed(2)}</span></li>`).join('')}
-        </ul>
-        <h5 class="text-end fw-bold text-success">Total: $${total}</h5>
-      `;
+  const skillsContainer = document.querySelector('#modalProfileSkills');
+  skillsContainer.innerHTML = freelancer.skills.map(skill => `<span class="badge bg-light text-dark border px-3 py-2">${skill}</span>`).join('');
 
-      new bootstrap.Modal(document.getElementById("summaryModal")).show();
-      document.getElementById("checkoutForm").reset();
-      clearCart();
-    }
+  const profileModal = new bootstrap.Modal(document.getElementById('freelancerProfileModal'));
+  profileModal.show();
+}
 
-    // Initial load
-    renderRestaurants(restaurantData);
-    renderFoods(foodData);
+// 6. Open Proposal Modal
+function openProposalModal(projectId) {
+  const project = defaultData.projects.find(p => p.id === projectId);
+  if (!project) return;
+
+  document.querySelector('#modalProjectId').value = project.id;
+  document.querySelector('#modalProjectName').textContent = `Applying for: ${project.title}`;
+  document.querySelector('#bidAmount').value = project.budget;
+
+  const modal = new bootstrap.Modal(document.getElementById('proposalModal'));
+  modal.show();
+}
+
+// 7. Handle Proposal Submission
+document.querySelector('#proposalForm')?.addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const projectId = parseInt(document.querySelector('#modalProjectId').value);
+  const project = defaultData.projects.find(p => p.id === projectId);
+  const bidAmount = document.querySelector('#bidAmount').value;
+
+  const newProposal = {
+    id: Date.now(),
+    projectTitle: project ? project.title : "Custom Project",
+    bidAmount: Number(bidAmount),
+    submissionDate: new Date().toISOString().split('T')[0],
+    status: "Under Review"
+  };
+
+  defaultData.userProposals.unshift(newProposal);
+  localStorage.setItem('userProposals', JSON.stringify(defaultData.userProposals));
+
+  renderProposals();
+  this.reset();
+
+  const modalEl = document.getElementById('proposalModal');
+  const modalInstance = bootstrap.Modal.getInstance(modalEl);
+  if (modalInstance) modalInstance.hide();
+
+  alert("Proposal submitted successfully!");
+});
+
+// 8. Search & Filters Logic
+function applyFilters() {
+  const searchTerm = document.querySelector('#mainSearchInput')?.value.toLowerCase().trim() || "";
+  const selectedCat = document.querySelector('#categoryFilter')?.value || "all";
+  const selectedBudget = document.querySelector('#budgetFilter')?.value || "all";
+
+  const filtered = defaultData.projects.filter(proj => {
+    const matchesSearch = proj.title.toLowerCase().includes(searchTerm) ||
+                          proj.description.toLowerCase().includes(searchTerm) ||
+                          proj.skills.some(s => s.toLowerCase().includes(searchTerm)) ||
+                          proj.client.toLowerCase().includes(searchTerm);
+
+    const matchesCategory = (selectedCat === "all") || (proj.category === selectedCat);
+
+    let matchesBudget = true;
+    if (selectedBudget === "low") matchesBudget = proj.budget < 500;
+    else if (selectedBudget === "medium") matchesBudget = proj.budget >= 500 && proj.budget <= 1500;
+    else if (selectedBudget === "high") matchesBudget = proj.budget > 1500;
+
+    return matchesSearch && matchesCategory && matchesBudget;
+  });
+
+  renderProjects(filtered);
+}
+
+function filterByCategory(catName) {
+  const catSelect = document.querySelector('#categoryFilter');
+  if (catSelect) {
+    catSelect.value = catName;
+    applyFilters();
+    location.href = '#projects';
+  }
+}
+
+// Event Listeners for Filters
+document.querySelector('#mainSearchInput')?.addEventListener('input', applyFilters);
+document.querySelector('#categoryFilter')?.addEventListener('change', applyFilters);
+document.querySelector('#budgetFilter')?.addEventListener('change', applyFilters);
+
+// Initialize on Load
+document.addEventListener('DOMContentLoaded', () => {
+  renderCategories();
+  renderProjects();
+  renderFreelancers();
+  renderProposals();
+});
